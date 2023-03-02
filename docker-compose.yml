@@ -1,0 +1,12 @@
+version: ‘3’
+services:
+  webapp:
+    build: ./backend
+    container_name: backend
+    working_dir: /app
+    volumes:
+      - ./backend:/app
+    ports:
+      - 8080:8000
+networks:
+  fastapi_net:
