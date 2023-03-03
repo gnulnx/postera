@@ -10,10 +10,12 @@ services:
       - 8080:8000
   gui:
     restart: always
+    container_name: frontend
     build: ./frontend
     ports:
-      - "3000:3000"
+      - "8001:80"
     volumes:
       - ./frontend:/app
+
 networks:
   fastapi_net:

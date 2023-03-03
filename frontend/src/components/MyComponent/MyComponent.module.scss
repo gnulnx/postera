@@ -1,0 +1,10 @@
+.MyComponent {
+    color: green;
+    
+
+}
+
+$myColor: blue;
+h1 {
+    color: $myColor;
+}   
