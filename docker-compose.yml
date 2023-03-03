@@ -4,18 +4,15 @@ services:
     build: ./backend
     container_name: backend
     working_dir: /app
-    volumes:
-      - ./backend:/app
     ports:
       - 8080:8000
   gui:
     restart: always
     container_name: frontend
+    working_dir: /app
     build: ./frontend
     ports:
       - "8001:80"
-    volumes:
-      - ./frontend:/app
 
 networks:
   fastapi_net:

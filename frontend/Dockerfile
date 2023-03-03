@@ -1,17 +1,29 @@
+# Stage 1 - Build React app with node container
+FROM node:19 as builder
+
+WORKDIR  /app
+
+# copy the package.json to install dependencies
+COPY package.json package-lock.json ./
+
+# Install node dependencies
+RUN npm install 
+
+# Copy src and public assets into container
+COPY public public
+COPY src src
+
+# Build the project for production
+RUN npm run build
+
+# Stage 2 setup nginx to host the React App
 FROM nginx:alpine
 
-#!/bin/sh
+# Upload our nginx config file to the container
 COPY ./nginx.conf /etc/nginx/nginx.conf
 
+# Copy our node build from stage1 to nginx/html director
+COPY --from=builder /app/build /usr/share/nginx/html
 
-## Remove default nginx index page
-# RUN rm -rf /usr/share/nginx/html/*
-
-# Copy from the stahg 1
-# COPY --from=builder /react-ui/build /usr/share/nginx/html
-RUN mkdir -p /usr/share/nginx/html2
-COPY ./build /usr/share/nginx/html2
-
-# EXPOSE 3000 80
-
+# Start nginx.
 ENTRYPOINT ["nginx", "-g", "daemon off;"]
