@@ -168,6 +168,7 @@ async def get_routes(q: str) -> dict:
         }
     }
 
+    # Print out the ES query so it's easy to debug in postman
     print(json.dumps(query, indent=4))
 
     resp = es.search(index="routes", query=query, highlight=highlight, size=100)
@@ -187,13 +188,6 @@ async def get_routes(q: str) -> dict:
             "products": products,
         })
         print(f"Total score={score} products={len(products)} building_blocks={len(building_blocks)}")
-        # jprint(building_blocks)
-        # jprint(rxn_tree)
-    # routes = make_routes()
+
     return results
-    return {
-        "data": rxn_tree,
-        "building_blocks": building_blocks,
-        "products": products,
-        "total_results": total_results
-    }
+

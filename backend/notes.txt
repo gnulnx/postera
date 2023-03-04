@@ -1,0 +1,31 @@
+routes.json file is a list of reactions, which can be multistep, to generate the molecule
+
+O=C(Cn1nnc2ccccc21)N(Cc1ccsc1)c1ccc(Cl)cc1
+
+You can view this molecule and the reactants at
+https://www.cheminfo.org/flavor/malaria/Utilities/SMILES_generator___checker/index.html
+
+
+
+ElastSearch Setup Stuff
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+✅ Elasticsearch security features have been automatically configured!
+✅ Authentication is enabled and cluster connections are encrypted.
+
+ℹ️  Password for the elastic user (reset with `bin/elasticsearch-reset-password -u elastic`):
+  uPi34OgU814QSbsotq9F
+
+ℹ️  HTTP CA certificate SHA-256 fingerprint:
+  5680126ac7422bf4f6ecdce8b375758682518b1677d1248e5c05eda3efd4289f
+
+ℹ️  Configure Kibana to use this cluster:
+• Run Kibana and click the configuration link in the terminal when Kibana starts.
+• Copy the following enrollment token and paste it into Kibana in your browser (valid for the next 30 minutes):
+  eyJ2ZXIiOiI4LjYuMiIsImFkciI6WyIxNzIuMTcuMC4yOjkyMDAiXSwiZmdyIjoiNTY4MDEyNmFjNzQyMmJmNGY2ZWNkY2U4YjM3NTc1ODY4MjUxOGIxNjc3ZDEyNDhlNWMwNWVkYTNlZmQ0Mjg5ZiIsImtleSI6InlBSUlyWVlCTlY5Q3JfUFpDM1VxOnh1WXNuQ1ExU2pTWThNNG1pTTczb1EifQ==
+
+ℹ️ Configure other nodes to join this cluster:
+• Copy the following enrollment token and start new Elasticsearch nodes with `bin/elasticsearch --enrollment-token <token>` (valid for the next 30 minutes):
+  eyJ2ZXIiOiI4LjYuMiIsImFkciI6WyIxNzIuMTcuMC4yOjkyMDAiXSwiZmdyIjoiNTY4MDEyNmFjNzQyMmJmNGY2ZWNkY2U4YjM3NTc1ODY4MjUxOGIxNjc3ZDEyNDhlNWMwNWVkYTNlZmQ0Mjg5ZiIsImtleSI6InlnSUlyWVlCTlY5Q3JfUFpDM1VzOnlJc0lIcUZ0U3lTeXpQMU1vLXNTWEEifQ==
+
+  If you're running in Docker, copy the enrollment token and run:
+  `docker run -e "ENROLLMENT_TOKEN=<token>" docker.elastic.co/elasticsearch/elasticsearch:8.6.2`
