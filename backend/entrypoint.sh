@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# Make sure we resrouce .bashrc to get all our conda paths setup correct
+# Make sure we resrouce .bashrc to get all our conda paths setup correctly
 source ~/.bashrc
 
 conda activate postera
