@@ -10,6 +10,11 @@ const useRoutesStyles = createUseStyles({
     },
 });
 
+const headerStyle = {
+    marginLeft: "25px"
+  }
+  
+
 export const SearchBar = ({setRoutes}) => {
     const styles = useRoutesStyles();
     const [query_term, setQueryTerm] = useState();
@@ -20,7 +25,8 @@ export const SearchBar = ({setRoutes}) => {
         const response = await fetch(`http://localhost:8080/routes?q=${query_term}`);
         const newRoutes = await response.json();
         console.log(newRoutes)
-        setRoutes(newRoutes[0].data)
+        // setRoutes(newRoutes[0].data)
+        setRoutes(newRoutes[newRoutes.length-1].data)
         console.log(query_term)
         // setTitle(query_term)
     };
@@ -38,7 +44,7 @@ export const SearchBar = ({setRoutes}) => {
     , []);
 
   return (
-    <header>
+    <header style={headerStyle}>
         <label>Search: </label>
         <input className={styles.foundation} onChange={debouncedOnChange} id="query"></input>
         {/* <input onChange={handleChange} id="query"></input> */}
