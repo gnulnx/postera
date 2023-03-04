@@ -2,7 +2,6 @@ import React, {useEffect, useState} from "react";
 import {createUseStyles} from 'react-jss';
 import Tree from 'react-d3-tree';
 
-
 // use jss styling
 const useRoutesStyles = createUseStyles({
   foundation: {
@@ -10,85 +9,28 @@ const useRoutesStyles = createUseStyles({
   },
 });
 
-export const Routes = () => {
+export const Routes = (routes) => {
   const styles = useRoutesStyles();
-  const [routes, setRoutes] = useState([]);
-
-  /* This is my psudeo code */
-  const fetch_data = e => {
-    fetch("http://localhost:8080")
-      .then(res => res.json())
-      .then(
-        (result) => {
-          console.log(result.message)
-          // MyComponent.defaultProps.message = result.message
-        }
-      )
-  }
-  /* end my code section */
-
-  const fetchRoutes = async () => {
-    const response = await fetch("http://localhost:8080/routes");
-    // If using VSCode + windows, try using your IP 
-    // instead (see frontent terminal)
-    //const response = await fetch("http://X.X.X.X:8000/routes");
-    const newRoutes = await response.json();
-    console.log(newRoutes)
-    setRoutes(newRoutes.data);
-  };
-
-  useEffect(() => {
-    fetchRoutes();
-  }, []);
-
-  const orgChart = {
-    name: 'CEO',
-    children: [
-      {
-        name: 'Manager',
-        attributes: {
-          department: 'Production',
-        },
-        children: [
-          {
-            name: 'Foreman',
-            attributes: {
-              department: 'Fabrication',
-            },
-            children: [
-              {
-                name: 'Worker',
-              },
-            ],
-          },
-          {
-            name: 'Foreman',
-            attributes: {
-              department: 'Assembly',
-            },
-            children: [
-              {
-                name: 'Worker',
-              },
-            ],
-          },
-        ],
-      },
-    ],
-  };
 
   // TODO: use react-d3-tree to visualize the routes
   //   - https://www.npmjs.com/package/react-d3-tree
 
+  // TODO Remove this
+  console.log(JSON.stringify(routes.routes, null, 2))
+
+
   return (
+    
     <div className={styles.foundation}>
-      <div id="treeWrapper" style={{ width: '50em', height: '20em' }}>
-        <Tree data={orgChart} />
+      <h1>{routes.title}</h1>
+      <div id="treeWrapper" style={{ width: '100vw', height: '100vh' }}>
+          <Tree 
+            // key={routes.title}
+            data={routes.routes}
+            // translate={translate}
+            orientation="vertical"
+            />
       </div>
-      {/* <button onClick={useEffect}>Fetch Routes </button>
-      {routes.map((route, routeNumber) => (
-        <h1 key={routeNumber}>Route {routeNumber}</h1>
-      ))} */}
     </div>
   );
 };

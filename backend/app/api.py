@@ -6,10 +6,19 @@ import rdkit.Chem.Draw
 
 app = FastAPI()
 
-origins = [
-    "http://localhost:3000",
-    "localhost:3000"
-]
+#Allow CORS from frontend app on port 8001
+app.add_middleware(
+    CORSMiddleware,
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_origins=["http://localhost:8001", "http://localhost:3000"],
+    allow_headers=["Access-Control-Allow-Origin"]
+)
+
+# origins = [
+#     "http://localhost:3000",
+#     "localhost:3000"
+# ]
 # If using VSCode + windows, try using your IP 
 # instead (see frontent terminal)
 #origins = [
@@ -18,13 +27,13 @@ origins = [
 #]
 
 
-app.add_middleware(
-    CORSMiddleware,
-    allow_origins=origins,
-    allow_credentials=True,
-    allow_methods=["*"],
-    allow_headers=["*"]
-)
+# app.add_middleware(
+#     CORSMiddleware,
+#     allow_origins=origins,
+#     allow_credentials=True,
+#     allow_methods=["*"],
+#     allow_headers=["*"]
+# )
 
 
 def make_routes():
@@ -54,7 +63,59 @@ async def get_molecule(smiles: str) -> dict:
 
 @app.get("/routes", tags=["routes"])
 async def get_routes() -> dict:
+
     routes = make_routes()
+
+    """
+     /*
+  "reactions": [
+            {
+                "name": "Amidation",
+                "target": "O=C(Cn1nnc2ccccc21)NCc1ccsc1",
+                "sources": [
+                    "NCc1ccsc1",
+                    "O=C(O)Cn1nnc2ccccc21"
+                ],
+                "smartsTemplate": "[C:2](=[O:3])[N;!$(N(C=O)(C=O)):1]>>([N:1][#1].[C:2](=[O:3])[O][#1])"
+            },
+            {
+                "name": "Iodo N-arylation",
+                "target": "O=C(Cn1nnc2ccccc21)N(Cc1ccsc1)c1ccc(Cl)cc1",
+                "sources": [
+                    "Clc1ccc(I)cc1",
+                    "O=C(Cn1nnc2ccccc21)NCc1ccsc1"
+                ],
+                "smartsTemplate": "[c:1]-;!@[$(n),$([N][C]=[O]):2]>>([*:1][I].[*:2][#1])"
+            }
+        ],
+  */
+    """
+
+    reactions = {
+        "name": 'O=C(Cn1nnc2ccccc21)N(Cc1ccsc1)c1ccc(Cl)cc1',
+        "attributes": {
+        "reaction": "Amidation"
+        },
+        "children": [
+        {
+            "name": 'Clc1ccc(I)cc1"',
+            "attributes": {
+            "reaction": 'Iodo N-arylation',
+            }
+        },
+        {
+            "name": 'O=C(Cn1nnc2ccccc21)NCc1ccsc1',
+            "children": [
+            {
+                "name": 'NCc1ccsc1',
+            },
+            {
+                "name": "O=C(O)Cn1nnc2ccccc21"
+            }
+            ]
+        },
+        ],
+    }
     return {
-        "data": routes,
+        "data": reactions,
     }
