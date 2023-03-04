@@ -16,7 +16,7 @@ export const Routes = (routes) => {
   //   - https://www.npmjs.com/package/react-d3-tree
 
   // TODO Remove this
-  console.log(JSON.stringify(routes.routes, null, 2))
+  // console.log(JSON.stringify(routes.routes, null, 2))
 
 
   return (
