@@ -11,7 +11,7 @@ function App() {
       <main>
         <Header />
         <div className="content-container">
-          <div classname="left_container">
+          <div className="left_container">
             <SearchBar setRoutes={setRoutes}/>
           </div>
           <div className="right_container">
