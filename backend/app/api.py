@@ -268,7 +268,8 @@ async def search(q: str) -> dict:
         result = {
             "score": route["_score"],
             "id": route["_id"],
-            "rxn_name": [rxn["name"] for rxn in route["_source"]["reactions"]]
+            "rxn_name": [rxn["name"] for rxn in route["_source"]["reactions"]],
+            "building_blocks": building_blocks
         }
 
         # Check if the user is trying to filter based on vender name from the highlights.
