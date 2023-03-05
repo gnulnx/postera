@@ -179,16 +179,16 @@ async def get_routes(q: str) -> dict:
     results = []
     rxn_tree = {}
     for route in resp["hits"]["hits"]:
-        score = route["_score"]
         [rxn_tree, products, building_blocks] = process_route(route)
         result = {
-            "score": score,
+            "score": route["_score"],
+            "id": route["_id"],
             "data": rxn_tree,
-            "building_blocks": building_blocks,
-            "products": products,
+            # "building_blocks": building_blocks,
+            # "products": products,
             "rxn_name": [rxn["name"] for rxn in route["_source"]["reactions"]]
         }
-        jprint(result["rxn_name"])
+        jprint({"id": result["id"], "results": result["rxn_name"]})
         results.append(result)
 
         # rxn_name = [rxn["name"] for rxn in route["_source"]["reactions"]]
@@ -198,3 +198,51 @@ async def get_routes(q: str) -> dict:
     print(f"Total hits {total_results}")
     return results
 
+
+@app.get("/search", tags=["routes"])
+async def search(q: str) -> dict:
+    query = {
+        "bool": {
+            "must": [
+                {
+                    "multi_match": {
+                        "query": term,
+                        "fields": [
+                            "molecules.smiles",
+                            "molecules.catalog_entries.catalog_name",
+                            "reactions.name",
+                            "reactions.target",
+                            "reactions.sources",
+                        ],
+                        "fuzziness" : "AUTO",
+                        "prefix_length" : 3,
+                        "_name": "matched_field"
+                    }
+                }
+                for term in q.split()
+            ]
+        }
+    }
+    highlight = {
+        "fields" : {
+            "molecules.smiles": {},
+            "molecules.catalog_entries.catalog_name": {},
+            "reactions.name" : {},
+            "reactions.target": {},
+            "reactions.sources": {}
+        }
+    }
+
+    resp = es.search(index="routes", query=query, highlight=highlight, size=100)
+
+    results = []
+    for route in resp["hits"]["hits"]:
+        result = {
+            "score": route["_score"],
+            "id": route["_id"],
+            "rxn_name": [rxn["name"] for rxn in route["_source"]["reactions"]]
+        }
+        jprint({"id": result["id"], "results": result["rxn_name"]})
+        results.append(result)
+
+    return results
