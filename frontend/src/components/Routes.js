@@ -1,27 +1,18 @@
-import React, {useEffect, useState} from "react";
 import {MolView} from "./";
 import { useCenteredTree } from "./helpers";
-import {createUseStyles} from 'react-jss';
 import Tree from 'react-d3-tree';
 import './Routes.css';
 
 
-// use jss styling
-const useRoutesStyles = createUseStyles({
-  foundation: {
-    margin: '10px',
-  },
-});
 
 export const Routes = (routes) => {
-  const styles = useRoutesStyles();
 
   const renderForeignObjectNode = ({ nodeDatum, toggleNode }) => {
     return (
       <g>
        <foreignObject {...foreignObjectProps}>
         <div>         
-          <MolView smiles={nodeDatum.name} />
+          <MolView smiles={nodeDatum.name} width={200} height={200}/>
         </div>
       </foreignObject>
     </g>

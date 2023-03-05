@@ -46,8 +46,8 @@ export const SearchResult = ({result, setRoutes}) => {
                                     </tr>
                                 </thead>
                                 <tbody>
-                                {bb.catalog_entries.map(function(entry, index) {
-                                    return <tr key={index}>
+                                {bb.catalog_entries.map(function(entry, bb_index) {
+                                    return <tr key={bb_index}>
                                         <td>{entry.catalog_name}</td>
                                         <td>{entry.lead_time_weeks}</td>
                                     </tr>
