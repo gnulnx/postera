@@ -1,6 +1,6 @@
 import './App.css';
-import React, {useEffect, useState} from "react"
-import {Header, MolView, Routes, SearchBar} from "./components";
+import React, {useState} from "react"
+import {Header, Routes, SearchBar} from "./components";
 
 function App() {
   const [routes, setRoutes] = useState(false)
@@ -30,7 +30,6 @@ function App() {
             <SearchBar setRoutes={setRoutes}/>
           </div>
           <div class="right_container">
-            Hello from right
           </div>
         </div>
       </main>

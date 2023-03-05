@@ -59,13 +59,10 @@
 }
 
 .left_container {
-  /* border-style: solid;
-  border-radius: 15px; */
-  width: 100%;
+  width: 45%;
+  margin-right: 5px;
 }
 
 .right_container {
-  border-style: solid;
-  border-radius: 15px;
   width: 100%;
 }

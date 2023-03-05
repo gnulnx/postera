@@ -28,7 +28,7 @@ export const Routes = (routes) => {
     )
   };
   const [translate, containerRef] = useCenteredTree();
-  const nodeSize = { x: 300, y: 300 };
+  const nodeSize = { x: 400, y: 400 };
   const foreignObjectProps = {
     width: nodeSize.x,
     height: nodeSize.y,
@@ -36,7 +36,7 @@ export const Routes = (routes) => {
 
   return (
     
-    <div className={styles.foundation}>
+    <div class="route_container">
       
       <h1>{routes.title}</h1>
       {/* <div id="treeWrapper" style={{ marginLeft: '10vw', width: '100vw', height: '100vh' }} ref={containerRef}> */}

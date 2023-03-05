@@ -46,9 +46,9 @@ export const SearchBar = ({setRoutes}) => {
 
     return (
         <div >
-            <label>Search: </label>
+            {/* <label>Search: </label> */}
             {/* <input className={styles.foundation} onChange={debouncedAutocomplete} id="query"></input> */}
-            <input onChange={debouncedAutocomplete} id="query"></input>
+            <input placeholder="Search for routes..." onChange={debouncedAutocomplete} id="query"></input>
             <ul id="search_results_dropdown">
                 {results.map(function(result, index){
                     console.log(`names ${result}`)

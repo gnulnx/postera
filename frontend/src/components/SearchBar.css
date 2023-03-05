@@ -1,6 +1,7 @@
 
 #search_results_dropdown {
     list-style-type: none;
+    padding-inline-start: 0px;
 }
 .rxn_item {
     border-style: solid;
@@ -11,12 +12,13 @@
 }
 
 input {
-    width: 90%
-}
-
-h1 {
-    display: block;
-    font-weight: bold;
+    width: 100%;
+    border-radius: 5px;
+    box-sizing: border-box;
+    padding-left: 20px;
+    padding-right: 20px;
+    padding-top: 10px;
+    padding-bottom: 10px;
 }
 
 p {
@@ -27,7 +29,6 @@ p {
     margin-inline-end: 0px;
 }
 #rxn_list {
-    /* list-style-type: disc; */
     padding-inline-start: 10px
 }
 .rxn_name {
