@@ -52,3 +52,20 @@
   padding: 10px;
   width: 400px;
 }
+
+.content-container {
+  margin-left: 25px;
+  display: flex;
+}
+
+.left_container {
+  /* border-style: solid;
+  border-radius: 15px; */
+  width: 100%;
+}
+
+.right_container {
+  border-style: solid;
+  border-radius: 15px;
+  width: 100%;
+}

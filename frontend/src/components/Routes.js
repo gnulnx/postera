@@ -1,9 +1,10 @@
 import React, {useEffect, useState} from "react";
-import SVG from 'react-inlinesvg';
 import {MolView} from "./";
 import { useCenteredTree } from "./helpers";
 import {createUseStyles} from 'react-jss';
 import Tree from 'react-d3-tree';
+import './Routes.css';
+
 
 // use jss styling
 const useRoutesStyles = createUseStyles({
@@ -27,7 +28,7 @@ export const Routes = (routes) => {
     )
   };
   const [translate, containerRef] = useCenteredTree();
-  const nodeSize = { x: 400, y: 400 };
+  const nodeSize = { x: 300, y: 300 };
   const foreignObjectProps = {
     width: nodeSize.x,
     height: nodeSize.y,
@@ -38,8 +39,8 @@ export const Routes = (routes) => {
     <div className={styles.foundation}>
       
       <h1>{routes.title}</h1>
-      <div id="treeWrapper" style={{ marginLeft: '10vw', width: '100vw', height: '100vh' }} ref={containerRef}>
-      {/* <div id="treeWrapper"  ref={containerRef}> */}
+      {/* <div id="treeWrapper" style={{ marginLeft: '10vw', width: '100vw', height: '100vh' }} ref={containerRef}> */}
+      <div id="treeWrapper"  ref={containerRef}>
           <Tree 
             data={routes.routes}
             translate={translate}

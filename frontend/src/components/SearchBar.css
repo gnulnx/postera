@@ -10,6 +10,10 @@
     width: 400px;
 }
 
+input {
+    width: 90%
+}
+
 h1 {
     display: block;
     font-weight: bold;

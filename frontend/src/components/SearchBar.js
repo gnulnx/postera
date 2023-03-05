@@ -11,11 +11,6 @@ const useRoutesStyles = createUseStyles({
     },
 });
 
-const headerStyle = {
-    marginLeft: "25px"
-  }
-  
-
 export const SearchBar = ({setRoutes}) => {
     const styles = useRoutesStyles();
     const [results, setSearchResults] = useState([])
@@ -50,9 +45,10 @@ export const SearchBar = ({setRoutes}) => {
 
 
     return (
-        <header style={headerStyle}>
+        <div >
             <label>Search: </label>
-            <input className={styles.foundation} onChange={debouncedAutocomplete} id="query"></input>
+            {/* <input className={styles.foundation} onChange={debouncedAutocomplete} id="query"></input> */}
+            <input onChange={debouncedAutocomplete} id="query"></input>
             <ul id="search_results_dropdown">
                 {results.map(function(result, index){
                     console.log(`names ${result}`)
@@ -70,6 +66,6 @@ export const SearchBar = ({setRoutes}) => {
 
                 })}
             </ul>
-        </header>
+        </div>
     );
 };

@@ -10,17 +10,29 @@ function App() {
     return (
       <main>
         <Header />
-          <SearchBar setRoutes={setRoutes}/>
-          {/* <div class="route_container"> */}
+        <div class="content-container">
+          <div class="left_container">
+            <SearchBar setRoutes={setRoutes}/>
+          </div>
+          <div class="right_container">
             <Routes routes={routes} />
-          {/* </div> */}
+          </div>
+        </div>
       </main>
     )
   } else {
     return (
       <main>
+        
         <Header />
-        <SearchBar setRoutes={setRoutes}/>
+        <div class="content-container">
+          <div class="left_container">
+            <SearchBar setRoutes={setRoutes}/>
+          </div>
+          <div class="right_container">
+            Hello from right
+          </div>
+        </div>
       </main>
     )
 
