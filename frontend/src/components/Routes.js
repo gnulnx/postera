@@ -15,48 +15,14 @@ const useRoutesStyles = createUseStyles({
 export const Routes = (routes) => {
   const styles = useRoutesStyles();
 
-  // const fetchMols = async (smiles) => {
-  //   const response = await fetch(`http://localhost:8080/molecule?smiles=${smiles}`);
-  //   const data = await response.json();
-  //   const svg = data.data
-  //   return svg
-  // };
-
-  // const svg = fetchMols("O=C(Cn1nnc2ccccc21)N(Cc1ccsc1)c1ccc(Cl)cc1")
-  // console.log(svg)
-
-
-  // TODO Remove this
   const renderForeignObjectNode = ({ nodeDatum, toggleNode }) => {
-
     return (
       <g>
-        {/* <circle r="100" onClick={toggleNode} /> */}
        <foreignObject {...foreignObjectProps}>
-        {/* <div style={{ border: "1px solid black", backgroundColor: "#dedede" }}> */}
-        <div>
-         
-          {/* <h3 style={{ textAlign: "center" }}>{nodeDatum.name}</h3> */}
+        <div>         
           <MolView smiles={nodeDatum.name} />
-          {/* {nodeDatum.children && (
-            <button style={{ width: "100%" }} onClick={toggleNode}>
-              {nodeDatum.__rd3t.collapsed ? "Expand" : "Collapse"}
-            </button>
-          )} */}
         </div>
       </foreignObject>
-      {/* <MolView smiles={nodeDatum.name} /> */}
-        {/* <circle r="1" onClick={toggleNode} />
-        <text fill="black" strokeWidth="1" x="-20">
-          {nodeDatum.name}
-          
-        </text>
-        {nodeDatum.attributes?.reaction && (
-          <text fill="black" x="20" dy="20" strokeWidth="1">
-            Reaction: {nodeDatum.attributes?.reaction}
-          </text>
-
-        )} */}
     </g>
     )
   };
@@ -73,6 +39,7 @@ export const Routes = (routes) => {
       
       <h1>{routes.title}</h1>
       <div id="treeWrapper" style={{ marginLeft: '10vw', width: '100vw', height: '100vh' }} ref={containerRef}>
+      {/* <div id="treeWrapper"  ref={containerRef}> */}
           <Tree 
             data={routes.routes}
             translate={translate}
@@ -80,7 +47,6 @@ export const Routes = (routes) => {
             renderCustomNodeElement={(rd3tProps) =>
               renderForeignObjectNode({ ...rd3tProps, foreignObjectProps })
             }
-            // renderCustomNodeElement={renderRectSvgNode}
             orientation="vertical"
             />
       </div>

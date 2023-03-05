@@ -10,7 +10,6 @@ export const MolView = ({smiles}) => {
     const response = await fetch(`http://localhost:8080/molecule?smiles=${smiles}`);
     const data = await response.json();
     setMol(data.data)
-    // document.getElementById(`${smiles}`).innerHTML = molecule
   };
 
   fetchMols(smiles)

@@ -1,4 +1,4 @@
-from fastapi import FastAPI
+from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 
 import rdkit.Chem as Chem
@@ -198,8 +198,30 @@ async def get_routes(q: str) -> dict:
     print(f"Total hits {total_results}")
     return results
 
+@app.get("/fetch_route", tags=["fetch_route"])
+async def fetch_route(id: str) -> dict:
+    print("Fetching roughte; %s" % id)
+    query = {
+        "terms": {
+            "_id": [id]
+            # "_id": ["xN_msYYBwNnBCR354t8S3"]
+        }
+    }
+    resp = es.search(index="routes", query=query)
+    total_results = resp['hits']['total']['value']
+    print("total results: %s" % total_results)
+    if not total_results:
+        raise HTTPException(status_code=404, detail="Route Not Found")
+    [rxn_tree, products, building_blocks] = process_route(resp['hits']['hits'][0])
 
-@app.get("/search", tags=["routes"])
+    return {
+        "data": rxn_tree,
+        "product": products,
+        "building_blocks": building_blocks
+    }
+    jprint(rxn_tree)
+
+@app.get("/search", tags=["search"])
 async def search(q: str) -> dict:
     query = {
         "bool": {
