@@ -223,6 +223,7 @@ async def fetch_route(id: str) -> dict:
 
 @app.get("/search", tags=["search"])
 async def search(q: str) -> dict:
+
     query = {
         "bool": {
             "must": [
@@ -255,16 +256,28 @@ async def search(q: str) -> dict:
         }
     }
 
-    resp = es.search(index="routes", query=query, highlight=highlight, size=100)
+    resp = es.search(index="routes", query=query, highlight=highlight, source=["molecules", "reactions"], size=100)
 
     results = []
     for route in resp["hits"]["hits"]:
+        
+        products = [mol for mol in route["_source"]["molecules"] if mol["is_building_block"] is False]
+        building_blocks = [mol for mol in route["_source"]["molecules"] if mol["is_building_block"] is True]
+        highlights = route["highlight"]
+
         result = {
             "score": route["_score"],
             "id": route["_id"],
             "rxn_name": [rxn["name"] for rxn in route["_source"]["reactions"]]
         }
-        jprint({"id": result["id"], "results": result["rxn_name"]})
-        results.append(result)
 
+        # Check if the user is trying to filter based on vender name from the highlights.
+        vendors = highlights.get("molecules.catalog_entries.catalog_name")
+        if not vendors:
+            results.append(result)
+        elif len(vendors) == len(building_blocks):
+            print("Limiting search results to vendor")
+            results.append(result)
+
+    print("returning %s" % len(results))
     return results

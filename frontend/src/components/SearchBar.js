@@ -34,6 +34,7 @@ export const SearchBar = ({setRoutes}) => {
         const response = await fetch(`http://localhost:8080/fetch_route?id=${route_id}`);
         const result = await response.json();
         setRoutes(result.data)
+        console.log(result)
     };
 
     function selectRoute (event) {
@@ -46,8 +47,6 @@ export const SearchBar = ({setRoutes}) => {
 
     return (
         <div >
-            {/* <label>Search: </label> */}
-            {/* <input className={styles.foundation} onChange={debouncedAutocomplete} id="query"></input> */}
             <input placeholder="Search for routes..." onChange={debouncedAutocomplete} id="query"></input>
             <ul id="search_results_dropdown">
                 {results.map(function(result, index){
