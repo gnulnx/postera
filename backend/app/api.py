@@ -150,7 +150,7 @@ async def get_routes(q: str) -> dict:
                             "reactions.sources",
                         ],
                         "fuzziness" : "AUTO",
-                        "prefix_length" : 2,
+                        "prefix_length" : 3,
                         "_name": "matched_field"
                     }
                 }
@@ -174,20 +174,27 @@ async def get_routes(q: str) -> dict:
     resp = es.search(index="routes", query=query, highlight=highlight, size=100)
 
     total_results = resp['hits']['total']['value']
-    print(f"Total hits {total_results}")
+    # print(f"Total hits {total_results}")
 
     results = []
     rxn_tree = {}
     for route in resp["hits"]["hits"]:
         score = route["_score"]
         [rxn_tree, products, building_blocks] = process_route(route)
-        results.append({
+        result = {
             "score": score,
             "data": rxn_tree,
             "building_blocks": building_blocks,
             "products": products,
-        })
-        print(f"Total score={score} products={len(products)} building_blocks={len(building_blocks)}")
+            "rxn_name": [rxn["name"] for rxn in route["_source"]["reactions"]]
+        }
+        jprint(result["rxn_name"])
+        results.append(result)
 
+        # rxn_name = [rxn["name"] for rxn in route["_source"]["reactions"]]
+        # print(f"Total score={score} products={len(products)} building_blocks={len(building_blocks)}")
+        # print(rxn_name)
+        # jprint(route["_source"]["reactions"])
+    print(f"Total hits {total_results}")
     return results
 
