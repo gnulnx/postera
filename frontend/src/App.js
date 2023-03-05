@@ -10,11 +10,11 @@ function App() {
     return (
       <main>
         <Header />
-        <div class="content-container">
-          <div class="left_container">
+        <div className="content-container">
+          <div classname="left_container">
             <SearchBar setRoutes={setRoutes}/>
           </div>
-          <div class="right_container">
+          <div className="right_container">
             <Routes routes={routes} />
           </div>
         </div>
@@ -25,11 +25,11 @@ function App() {
       <main>
         
         <Header />
-        <div class="content-container">
-          <div class="left_container">
+        <div className="content-container">
+          <div className="left_container">
             <SearchBar setRoutes={setRoutes}/>
           </div>
-          <div class="right_container">
+          <div className="right_container">
           </div>
         </div>
       </main>

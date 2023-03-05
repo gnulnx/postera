@@ -36,7 +36,7 @@ export const Routes = (routes) => {
 
   return (
     
-    <div class="route_container">
+    <div className="route_container">
       
       <h1>{routes.title}</h1>
       {/* <div id="treeWrapper" style={{ marginLeft: '10vw', width: '100vw', height: '100vh' }} ref={containerRef}> */}
