@@ -1,6 +1,7 @@
 from elasticsearch import Elasticsearch
 import json
 import os
+from .utils import jprint, terms_to_smiles
 
 docker = os.environ.get("DOCKER")
 
@@ -9,38 +10,62 @@ if docker:
 else:
     es = Elasticsearch("http://localhost:9200")
 
-
-# utility function for pretty printing json/dicts
-def jprint(s):
-    print(json.dumps(s, indent=4))
+import rdkit.Chem as Chem
 
 
 def typeahead_search(q):
+
+    terms = q.split()
+
+    # Check our list of terms for smiles strings.
+    smiles = terms_to_smiles(terms)
+
+    # Now let's remove all smiles strings from our terms
+    for mol in smiles:
+        terms.remove(mol)
+    
+    # Build fuzzy autocomplete queries for text terms
+    text_queries = [{
+        "multi_match": {
+            "query": term,
+            "fields": [
+                "molecules.catalog_entries.catalog_name",
+                "reactions.name",
+            ],
+            "fuzziness" : "AUTO",
+            "prefix_length" : 3,
+            "_name": "matched_field"
+        }
+    } for term in terms] 
+    
+
+    # Build exact match queries for bbs matching smiles
+    bb_queries = [{
+        "term": {
+            "reactions.sources.keyword": {
+                "value": mol
+            }
+        }
+    } for mol in smiles]
+    
+
+    all_queries = text_queries + bb_queries
+     
+
+
     query = {
         "bool": {
-            "must": [
-                {
-                    "multi_match": {
-                        "query": term,
-                        "fields": [
-                            "molecules.catalog_entries.catalog_name",
-                            "reactions.name",
-                        ],
-                        "fuzziness" : "AUTO",
-                        "prefix_length" : 3,
-                        "_name": "matched_field"
-                    }
-                }
-                for term in q.split()
-            ]
+            "must": all_queries
         }
     }
     highlight = {
         "fields" : {
             "molecules.catalog_entries.catalog_name": {},
             "reactions.name" : {},
+            "reactions.sources.keyword": {}
         }
     }
+    jprint(query)
 
     resp = es.search(index="routes", query=query, highlight=highlight, source=["molecules", "reactions"], size=100)
 
@@ -51,7 +76,8 @@ def typeahead_search(q):
         building_blocks = [mol for mol in route["_source"]["molecules"] if mol["is_building_block"] is True]
 
         # Check if the user is trying to filter based on vender name from the highlights.
-        vendor_highlights = route.get("highlight").get("molecules.catalog_entries.catalog_name")
+        vendor_highlights = route.get("highlight", {}).get("molecules.catalog_entries.catalog_name")
+        jprint(vendor_highlights)
 
         found_vendors_for_all_bb = True
         if vendor_highlights:

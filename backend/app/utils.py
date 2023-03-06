@@ -8,6 +8,14 @@ def jprint(s):
     """
     print(json.dumps(s, indent=4))
 
+def terms_to_smiles(terms):
+    smiles = []
+    for term in terms:
+        mol = Chem.MolFromSmiles(term)
+        if mol:
+            smiles.append(term)
+    return smiles
+
 def draw_molecule(smiles: str):
     mol = Chem.MolFromSmiles(smiles)
     img = Chem.Draw.MolsToGridImage([mol], molsPerRow=1, useSVG=True)
