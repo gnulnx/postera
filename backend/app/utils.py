@@ -109,17 +109,16 @@ def est_lead_time(bbs):
     
     The estimated lead time is then the MAX of BB lead times.
     """
-    lead_times = [{entry["catalog_name"]: entry["lead_time_weeks"]} for mol in bbs for entry in mol["catalog_entries"]]
-    print("Lead_times: %s" % lead_times)
+    # lead_times = [{entry["catalog_name"]: entry["lead_time_weeks"]} for mol in bbs for entry in mol["catalog_entries"]]
 
     min_lead_times = []
     for mol in bbs:
         lead_times = [e["lead_time_weeks"] for e in mol["catalog_entries"]]
-        min_time = min(lead_times)
+        # min_time = min(lead_times)
         min_lead_times.append(min(lead_times))
-        min_lead_tiem = min(lead_times)
-        jprint(mol)
-        print(mol["smiles"], lead_times, min_time)
+        # min_lead_tiem = min(lead_times)
+        # jprint(mol)
+        # print(mol["smiles"], lead_times, min_time)
        
-    print("estimated lead_time: %s" % max(min_lead_times))
+    # print("estimated lead_time: %s" % max(min_lead_times))
     return max(min_lead_times)

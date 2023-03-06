@@ -17,12 +17,21 @@ def typeahead_search(q):
 
     terms = q.split()
 
+    # Check for negated vedors
+    negated_vendors = [term for term in terms if term.startswith("-")]
+    
     # Check our list of terms for smiles strings.
     smiles = terms_to_smiles(terms)
 
-    # Now let's remove all smiles strings from our terms
-    for mol in smiles:
+    # Now let's remove all smiles strings and negated_vendors from our terms
+    for mol in smiles +negated_vendors:
         terms.remove(mol)
+
+    # Now remove the leading '-' from negated vendors for easier matching later
+    negated_vendors = [vendor[1:] for vendor in negated_vendors]
+    print("negated_vendors: %s" % negated_vendors)
+
+    print("Terms to match on: %s" % terms)
     
     # Build fuzzy autocomplete queries for text terms
     text_queries = [{
@@ -47,15 +56,12 @@ def typeahead_search(q):
             }
         }
     } for mol in smiles]
+
+    # all_queries = text_queries + bb_queries
     
-
-    all_queries = text_queries + bb_queries
-     
-
-
     query = {
         "bool": {
-            "must": all_queries
+            "must": text_queries + bb_queries,
         }
     }
     highlight = {
@@ -65,7 +71,7 @@ def typeahead_search(q):
             "reactions.sources.keyword": {}
         }
     }
-    jprint(query)
+    # jprint(query)
 
     resp = es.search(index="routes", query=query, highlight=highlight, source=["molecules", "reactions"], size=100)
 
@@ -75,9 +81,13 @@ def typeahead_search(q):
         # Build a list of building blocks from the molecules section
         building_blocks = [mol for mol in route["_source"]["molecules"] if mol["is_building_block"] is True]
 
+        # Remove all the negated vendors from the building_blocks
+        for bb in building_blocks:
+            bb["catalog_entries"] = [entry for entry in bb["catalog_entries"] if entry["catalog_name"] not in negated_vendors]
+
         # Check if the user is trying to filter based on vender name from the highlights.
         vendor_highlights = route.get("highlight", {}).get("molecules.catalog_entries.catalog_name")
-        jprint(vendor_highlights)
+        # jprint(vendor_highlights)
 
         found_vendors_for_all_bb = True
         if vendor_highlights:
@@ -91,8 +101,6 @@ def typeahead_search(q):
                     break
             
         if found_vendors_for_all_bb:
-            
-
             results.append({
                 "score": route["_score"],
                 "id": route["_id"],
