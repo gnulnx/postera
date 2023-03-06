@@ -15,16 +15,18 @@ export const SearchResult = ({result, setRoutes}) => {
 
     function selectRoute (event) {
         const route_id = event.currentTarget.id
-        console.log(`FetchRouate for ${route_id}`)
         fetch_route(route_id)
-        expandElement(1 ? expand == 0 : 0)
+    }
 
-        console.log(result.building_blocks)
+    function expand_result(evet) {
+        expandElement(1 ? expand == 0 : 0)
     }
 
     return (
         <li key={result.id} className="rxn_item" id={result.id} onClick={selectRoute}>
-            <p className="result_header">Synthetic Steps {result.rxn_name.length}</p>
+            <p className="result_header">Synthetic Steps {result.rxn_name.length} 
+                <span className="expand_results" onClick={expand_result}>expand</span>
+            </p>
             <ul id="rxn_list">
             {result.rxn_name.map(function(name, index2){
                 return <li key={index2} className="rxn_name">Step {index2+1}: {name}</li>
@@ -33,11 +35,15 @@ export const SearchResult = ({result, setRoutes}) => {
                 <div>
                 <h4>Building Block Information</h4>
 
-                <ul id="bb_list">
+                <ul className="bb_list">
                     {result.building_blocks.map(function(bb, index2){
                         console.log(bb.catalog_entries)
-                        return <li key={bb.smiles} className="rxn_name">
+                        return <li key={bb.smiles} className="bb_info">
+                            <span>
+                            
                             <MolView smiles={bb.smiles} width={100} height={100} />
+                            <p className="smiles_p">Smiles: {bb.smiles}</p>
+                            </span>
                             <table>
                                 <thead>
                                     <tr>

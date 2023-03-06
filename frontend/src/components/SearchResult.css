@@ -1,0 +1,29 @@
+.smiles_p {
+    margin-top: 0.0em;
+    margin-bottom: 1.0em; 
+}
+
+.bb_info {
+    display: block;
+    border-bottom: 2px solid black;
+    margin-top: 0.0em;
+    margin-bottom: 0.0em; 
+    margin-left: -30px;
+    padding-bottom: 5px
+}
+
+th {
+    border-bottom: 1px solid black
+}
+
+table th, td {
+    text-align: center
+}
+
+
+.expand_results {
+    font-weight: normal;
+    float: right;
+    color: blue;
+
+}
