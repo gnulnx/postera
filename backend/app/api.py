@@ -13,8 +13,6 @@ app.add_middleware(
     allow_credentials=True,
     allow_methods=["*"],
     allow_origins=[
-        "http://localhost:8001",
-        "http://localhost:3000", # SHould be able to remove this later
         "http://localhost:8000",
     ],
     allow_headers=["Access-Control-Allow-Origin"]
@@ -39,6 +37,10 @@ async def get_molecule(smiles: str) -> dict:
 
 @app.get("/fetch_route", tags=["fetch_route"])
 async def fetch_route(id: str) -> dict:
+    """
+    Given the ES id fetch the reaction from ES and then process the route to return
+    the rxn_tree for D3 rendering.
+    """
     resp = fetch_reaction(id)
     total_results = resp['hits']['total']['value']
     if not total_results:
@@ -53,5 +55,10 @@ async def fetch_route(id: str) -> dict:
 
 @app.get("/search", tags=["search"])
 async def search(q: str) -> dict:
+    """
+    API to perform fuzzy typeahead searching against reactions name and vender names.
+    Also provides the ability to negate vendors for example "-molprint"
+    In addition it will perform exact matches on any supplied smiles strings.
+    """
     result = typeahead_search(q)
     return result

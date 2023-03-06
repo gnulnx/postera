@@ -12,11 +12,7 @@ def terms_to_smiles(terms: list):
     """
     Given a list of terms find find all terms that are smiles strings and return that list.
     """
-    smiles = []
-    for term in terms:
-        mol = Chem.MolFromSmiles(term)
-        if mol:
-            smiles.append(term)
+    smiles = [term for term in terms if Chem.MolFromSmiles(term)]
     return smiles
 
 def draw_molecule(smiles: str):
@@ -80,28 +76,23 @@ def process_route(route: dict):
             ],
         }
     """
-    route = route["_source"]
-
+    route = route.get("_source")
     routes = []
     rxn_map = {}
-    for product in route["reactions"]:
-        children = []
-        for s in product["sources"]:
-            if s in rxn_map:
-                children.append({
-                    "name": s,
-                    "attributes": rxn_map[s]["attributes"],
-                    "children": rxn_map[s]["children"]
-                })
-            else:
-                children.append({"name": s})
-
+    
+    for product in route.get("reactions"):
+        sources = product.get("sources")
+        children = [{
+            "name": s,
+            "attributes": rxn_map[s]["attributes"],
+            "children": rxn_map[s]["children"]
+        } if s in rxn_map else {"name": s} for s in sources]
+            
         rxn_tree = {
             "name": product["target"],
             "attributes": {"reaction": product["name"]},
             "children": children
         }
-
 
         rxn_map[product["target"]] = rxn_tree
         routes.append(rxn_tree)
@@ -110,15 +101,10 @@ def process_route(route: dict):
 
 def est_lead_time(bbs: list):
     """
-    In order to find the estimated lead time we first need to find the MIN lead time
-    for each building block based on the list of selected vendors.
+    A list of minimum lead times are created, obtained from the "lead_time_weeks" attribute in mol["catalog_entries"].
+    The list is generated through iteration over bbs where each molecule is accessed one by one.
     
-    The estimated lead time is then the MAX of BB lead times.
+    The estimated lead time is then the max() of BB lead times.
     """
-
-    min_lead_times = []
-    for mol in bbs:
-        lead_times = [e["lead_time_weeks"] for e in mol["catalog_entries"]]
-        min_lead_times.append(min(lead_times))
-
+    min_lead_times = [min([e["lead_time_weeks"] for e in mol["catalog_entries"]]) for mol in bbs]
     return max(min_lead_times)
