@@ -15,7 +15,7 @@ services:
     working_dir: /app
     build: ./frontend
     ports:
-      - "8001:80"
+      - "8000:80"
 
   es:
     image: docker.elastic.co/elasticsearch/elasticsearch:8.6.2
