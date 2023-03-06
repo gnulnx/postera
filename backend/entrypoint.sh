@@ -7,6 +7,9 @@ conda activate postera
 yes | conda install --file conda-packages.txt
 pip install -r requirements.txt
 
+# Import the data into elasticsearch
+python setup_es.py
+
 # Start up the fastapi server
 python main.py
 

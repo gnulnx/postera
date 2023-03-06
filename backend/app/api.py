@@ -1,13 +1,8 @@
 from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 
-import json
 from .queries import typeahead_search, fetch_reaction
 from .utils import process_route, draw_molecule
-from elasticsearch import Elasticsearch
-
-# TODO move this somewhere else....
-es = Elasticsearch("http://localhost:9200")
 
 app = FastAPI()
 
@@ -20,7 +15,7 @@ app.add_middleware(
     allow_origins=[
         "http://localhost:8001",
         "http://localhost:3000", # SHould be able to remove this later
-        "http://localhost:8000"
+        "http://localhost:8000",
     ],
     allow_headers=["Access-Control-Allow-Origin"]
 )

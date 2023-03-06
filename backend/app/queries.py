@@ -1,8 +1,14 @@
 from elasticsearch import Elasticsearch
 import json
+import os
 
-# TODO move this somewhere else....
-es = Elasticsearch("http://localhost:9200")
+docker = os.environ.get("DOCKER")
+
+if docker:
+    es = Elasticsearch("http://es:9200")
+else:
+    es = Elasticsearch("http://localhost:9200")
+
 
 # utility function for pretty printing json/dicts
 def jprint(s):

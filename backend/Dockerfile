@@ -5,15 +5,15 @@ FROM continuumio/miniconda3
 # Make sure we have gcc installed
 ENV DEBIAN_FRONTEND noninteractive
 RUN apt-get update && \
-    apt-get -y install gcc mono-mcs && \
+    apt-get -y install gcc mono-mcs iputils-ping && \
     rm -rf /var/lib/apt/lists/*
 
 WORKDIR  /app
 
-# Copy Fastapi code over
-COPY . .
-
 RUN yes | conda create --name postera python=3.8
 RUN conda init bash
+
+# Copy Fastapi code over
+COPY . .
 
 ENTRYPOINT [ "./entrypoint.sh" ]

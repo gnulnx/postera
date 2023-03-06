@@ -4,8 +4,11 @@ services:
     build: ./backend
     container_name: backend
     working_dir: /app
+    environment:
+      - DOCKER=1
     ports:
-      - 8080:8000
+      - 8080:8080
+
   gui:
     restart: always
     container_name: frontend
@@ -24,8 +27,12 @@ services:
       - "xpack.security.enabled=false"
       - discovery.type=single-node
       # - xpack.security.enabled=false
-      # - http.cors.enabled=true
-      # - http.cors.allow-origin=*
+      - http.cors.enabled=false
+      # # - "http.cors.allow-origin=http://localhost:8080"
+      # - "http.cors.allow-origin='*'"
+      # - "http.cors.allow-headers=Access-Control-Allow-Origin,X-Requested-With,X-Auth-Token,Content-Type,Content-Length,Authorization"
+      # - "http.cors.allow-headers=X-Requested-With,X-Auth-Token,Content-Type,Content-Length,Authorization"
+      # - "http.cors.allow-credentials=true"
       # - discovery.zen.minimum_master_nodes=2
     ulimits:
       memlock:
@@ -35,8 +42,8 @@ services:
     #   - ./esdata:/usr/share/elasticsearch/data
     ports:
       - 9200:9200
-    networks:
-      - elastic
+    # networks:
+    #   - elastic
 
 
 networks:

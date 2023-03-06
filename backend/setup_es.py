@@ -1,11 +1,15 @@
 #!/usr/bin/env python
 
 import json
+import os
 from elasticsearch import Elasticsearch
-es = Elasticsearch("http://localhost:9200")
 
-def jprint(s):
-    print(json.dumps(s, indent=4))
+docker = os.environ.get("DOCKER")
+
+if docker:
+    es = Elasticsearch("http://es:9200")
+else:
+    es = Elasticsearch("http://localhost:9200")
 
 index_name = 'routes'
 

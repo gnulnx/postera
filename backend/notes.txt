@@ -19,3 +19,9 @@ Identify the products and the building blocks.
 You can look up a single route by id like this.
 
 http://localhost:9200/routes/_doc/xN_msYYBwNnBCR354t8S
+
+
+Usefule Queries to Demo
+
+Amine - should show 25 results
+Amine Shotten - should onlye show 15
