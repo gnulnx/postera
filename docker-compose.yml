@@ -4,15 +4,48 @@ services:
     build: ./backend
     container_name: backend
     working_dir: /app
+    environment:
+      - DOCKER=1
     ports:
-      - 8080:8000
+      - 8080:8080
+
   gui:
     restart: always
     container_name: frontend
     working_dir: /app
     build: ./frontend
     ports:
-      - "8001:80"
+      - "8000:80"
+
+  es:
+    image: docker.elastic.co/elasticsearch/elasticsearch:8.6.2
+    container_name: es
+    environment:
+      - cluster.name=docker-cluster
+      - bootstrap.memory_lock=true
+      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+      - "xpack.security.enabled=false"
+      - discovery.type=single-node
+      # - xpack.security.enabled=false
+      - http.cors.enabled=false
+      # # - "http.cors.allow-origin=http://localhost:8080"
+      # - "http.cors.allow-origin='*'"
+      # - "http.cors.allow-headers=Access-Control-Allow-Origin,X-Requested-With,X-Auth-Token,Content-Type,Content-Length,Authorization"
+      # - "http.cors.allow-headers=X-Requested-With,X-Auth-Token,Content-Type,Content-Length,Authorization"
+      # - "http.cors.allow-credentials=true"
+      # - discovery.zen.minimum_master_nodes=2
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+    # volumes:
+    #   - ./esdata:/usr/share/elasticsearch/data
+    ports:
+      - 9200:9200
+    # networks:
+    #   - elastic
+
 
 networks:
   fastapi_net:
+  elastic: {}

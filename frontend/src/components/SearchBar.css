@@ -1,0 +1,44 @@
+
+#search_results_dropdown {
+    list-style-type: none;
+    padding-inline-start: 0px;
+}
+.rxn_item {
+    border-style: solid;
+    border-radius: 15px;
+    margin: 2px 0;
+    padding: 10px;
+    width: 400px;
+}
+
+input {
+    width: 100%;
+    border-radius: 5px;
+    box-sizing: border-box;
+    padding-left: 20px;
+    padding-right: 20px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+}
+
+p {
+    display: block;
+    margin-block-start: 1em;
+    margin-block-end: 1em;
+    margin-inline-start: 0px;
+    margin-inline-end: 0px;
+}
+#rxn_list {
+    padding-inline-start: 10px
+}
+.rxn_name {
+    display: block;
+    margin-left: 5px;
+}
+
+.result_header {
+    font-weight: bold;
+    margin-top: 1px;
+    margin-bottom: 1px;
+    width:100%;
+}

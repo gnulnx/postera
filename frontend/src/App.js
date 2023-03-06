@@ -1,26 +1,42 @@
 import './App.css';
-import MyComponent from './components/MyComponent/MyComponent';
+import React, {useState} from "react"
+import {Header, Routes, SearchBar} from "./components";
 
 function App() {
-  return <MyComponent />
-  // return (
-  //   <div className="App">
-  //     <header className="App-header">
-  //       <img src={logo} className="App-logo" alt="logo" />
-  //       <p>
-  //         Edit <code>src/App.js</code> and save to reload.
-  //       </p>
-  //       <a
-  //         className="App-link"
-  //         href="https://reactjs.org"
-  //         target="_blank"
-  //         rel="noopener noreferrer"
-  //       >
-  //         Learn React
-  //       </a>
-  //     </header>
-  //   </div>
-  // );
+  const [routes, setRoutes] = useState(false)
+
+  // Surely there is a better way to handle conditional rendering in React???
+  if (true ? routes : false) {
+    return (
+      <main>
+        <Header />
+        <div className="content-container">
+          <div className="left_container">
+            <SearchBar setRoutes={setRoutes}/>
+          </div>
+          <div className="right_container">
+            <Routes routes={routes} />
+          </div>
+        </div>
+      </main>
+    )
+  } else {
+    return (
+      <main>
+        
+        <Header />
+        <div className="content-container">
+          <div className="left_container">
+            <SearchBar setRoutes={setRoutes}/>
+          </div>
+          <div className="right_container">
+          </div>
+        </div>
+      </main>
+    )
+
+  }
+
 }
 
 export default App;

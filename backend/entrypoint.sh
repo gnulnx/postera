@@ -1,7 +1,17 @@
-#!/usr/bin/env bash
+#!/bin/bash
 
+# Make sure we resrouce .bashrc to get all our conda paths setup correctly
+source ~/.bashrc
 
-uvicorn --host 0.0.0.0 --port 8000 main:app
+conda activate postera
+yes | conda install --file conda-packages.txt
+pip install -r requirements.txt
+
+# Import the data into elasticsearch
+python setup_es.py
+
+# Start up the fastapi server
+python main.py
 
 # Fail back in case startup fails and you
 # need to get into the container and debug
