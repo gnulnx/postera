@@ -27,6 +27,7 @@ export const SearchResult = ({result, setRoutes}) => {
             <p className="result_header">Synthetic Steps {result.rxn_name.length} 
                 <span className="expand_results" onClick={expand_result}>expand</span>
             </p>
+            <p className="result_header">Est Lead Time: {result.est_lead_time}</p>
             <ul id="rxn_list">
             {result.rxn_name.map(function(name, index2){
                 return <li key={index2} className="rxn_name">Step {index2+1}: {name}</li>

@@ -1,7 +1,7 @@
 from elasticsearch import Elasticsearch
 import json
 import os
-from .utils import jprint, terms_to_smiles
+from .utils import jprint, terms_to_smiles, est_lead_time
 
 docker = os.environ.get("DOCKER")
 
@@ -91,11 +91,14 @@ def typeahead_search(q):
                     break
             
         if found_vendors_for_all_bb:
+            
+
             results.append({
                 "score": route["_score"],
                 "id": route["_id"],
                 "rxn_name": [rxn["name"] for rxn in route["_source"]["reactions"]],
-                "building_blocks":  building_blocks
+                "building_blocks":  building_blocks,
+                "est_lead_time": est_lead_time(building_blocks)
             })
 
     return results

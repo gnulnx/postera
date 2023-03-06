@@ -101,3 +101,25 @@ def process_route(route):
         routes.append(rxn_tree)
 
     return rxn_tree
+
+def est_lead_time(bbs):
+    """
+    In order to find the estimated lead time we first need to find the MIN lead time
+    for each building block based on the list of selected vendors.
+    
+    The estimated lead time is then the MAX of BB lead times.
+    """
+    lead_times = [{entry["catalog_name"]: entry["lead_time_weeks"]} for mol in bbs for entry in mol["catalog_entries"]]
+    print("Lead_times: %s" % lead_times)
+
+    min_lead_times = []
+    for mol in bbs:
+        lead_times = [e["lead_time_weeks"] for e in mol["catalog_entries"]]
+        min_time = min(lead_times)
+        min_lead_times.append(min(lead_times))
+        min_lead_tiem = min(lead_times)
+        jprint(mol)
+        print(mol["smiles"], lead_times, min_time)
+       
+    print("estimated lead_time: %s" % max(min_lead_times))
+    return max(min_lead_times)
