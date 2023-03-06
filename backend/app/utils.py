@@ -2,13 +2,16 @@ import rdkit.Chem as Chem
 import rdkit.Chem.Draw
 import json
 
-def jprint(s):
+def jprint(s: dict):
     """
     Simple utility method to pretty print dictionaries
     """
     print(json.dumps(s, indent=4))
 
-def terms_to_smiles(terms):
+def terms_to_smiles(terms: list):
+    """
+    Given a list of terms find find all terms that are smiles strings and return that list.
+    """
     smiles = []
     for term in terms:
         mol = Chem.MolFromSmiles(term)
@@ -17,11 +20,14 @@ def terms_to_smiles(terms):
     return smiles
 
 def draw_molecule(smiles: str):
+    """
+    given a smiles string return the SVG code for the moecule.
+    """
     mol = Chem.MolFromSmiles(smiles)
     img = Chem.Draw.MolsToGridImage([mol], molsPerRow=1, useSVG=True)
     return img
 
-def process_route(route):
+def process_route(route: dict):
     """
         Given a synthetic route described as such
 
@@ -102,23 +108,17 @@ def process_route(route):
 
     return rxn_tree
 
-def est_lead_time(bbs):
+def est_lead_time(bbs: list):
     """
     In order to find the estimated lead time we first need to find the MIN lead time
     for each building block based on the list of selected vendors.
     
     The estimated lead time is then the MAX of BB lead times.
     """
-    # lead_times = [{entry["catalog_name"]: entry["lead_time_weeks"]} for mol in bbs for entry in mol["catalog_entries"]]
 
     min_lead_times = []
     for mol in bbs:
         lead_times = [e["lead_time_weeks"] for e in mol["catalog_entries"]]
-        # min_time = min(lead_times)
         min_lead_times.append(min(lead_times))
-        # min_lead_tiem = min(lead_times)
-        # jprint(mol)
-        # print(mol["smiles"], lead_times, min_time)
-       
-    # print("estimated lead_time: %s" % max(min_lead_times))
+
     return max(min_lead_times)
