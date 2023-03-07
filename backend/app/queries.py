@@ -13,7 +13,10 @@ else:
 import rdkit.Chem as Chem
 
 
-def typeahead_search(q):
+def typeahead_search(q: str):
+    """
+    Perform an intelligent fuzzy typeahead search
+    """
 
     terms = q.split()
 
@@ -23,15 +26,12 @@ def typeahead_search(q):
     # Check our list of terms for smiles strings.
     smiles = terms_to_smiles(terms)
 
-    # Now let's remove all smiles strings and negated_vendors from our terms
-    for mol in smiles +negated_vendors:
-        terms.remove(mol)
+    # Remove all smiles strings and negated_vendors from our terms
+    for term in smiles + negated_vendors:
+        terms.remove(term)
 
     # Now remove the leading '-' from negated vendors for easier matching later
     negated_vendors = [vendor[1:] for vendor in negated_vendors]
-    print("negated_vendors: %s" % negated_vendors)
-
-    print("Terms to match on: %s" % terms)
     
     # Build fuzzy autocomplete queries for text terms
     text_queries = [{
@@ -56,8 +56,6 @@ def typeahead_search(q):
             }
         }
     } for mol in smiles]
-
-    # all_queries = text_queries + bb_queries
     
     query = {
         "bool": {
@@ -71,7 +69,6 @@ def typeahead_search(q):
             "reactions.sources.keyword": {}
         }
     }
-    # jprint(query)
 
     resp = es.search(index="routes", query=query, highlight=highlight, source=["molecules", "reactions"], size=100)
 
@@ -87,7 +84,6 @@ def typeahead_search(q):
 
         # Check if the user is trying to filter based on vender name from the highlights.
         vendor_highlights = route.get("highlight", {}).get("molecules.catalog_entries.catalog_name")
-        # jprint(vendor_highlights)
 
         found_vendors_for_all_bb = True
         if vendor_highlights:
@@ -116,7 +112,6 @@ def fetch_reaction(id):
     """
     Fetch a single route from the database by the elasticsearchid
     """
-
     query = {
         "terms": {
             "_id": [id]

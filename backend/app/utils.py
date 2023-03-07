@@ -77,8 +77,8 @@ def process_route(route: dict):
         }
     """
     route = route.get("_source")
-    routes = []
     rxn_map = {}
+    rxn_tree = {}
     
     for product in route.get("reactions"):
         sources = product.get("sources")
@@ -95,7 +95,6 @@ def process_route(route: dict):
         }
 
         rxn_map[product["target"]] = rxn_tree
-        routes.append(rxn_tree)
 
     return rxn_tree
 
